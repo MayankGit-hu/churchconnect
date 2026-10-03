@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Find Ministry Jobs — ChurchConnect | AI Resume Matching for Churches</title>
+  <meta name="description" content="Upload your resume and let our AI match you to the perfect ministry job across American churches. Browse 52,000+ open positions with detailed job descriptions." />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛪</text></svg>" />
+  <style>
+    /* ─── Jobs Page Extras ─── */
+    .jobs-layout { display: grid; grid-template-columns: 320px 1fr; gap: 2rem; align-items: start; }
+    .sidebar {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 100px;
+    }
+    .sidebar h3 { font-size: 1rem; margin-bottom: 1.25rem; display: flex; justify-content: space-between; align-items: center; }
+    .sidebar-section { margin-bottom: 1.75rem; padding-bottom: 1.75rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .sidebar-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .sidebar-label { font-size: 0.78rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem; }
+    .checkbox-list { display: flex; flex-direction: column; gap: 0.6rem; }
+    .checkbox-item { display: flex; align-items: center; gap: 0.6rem; font-size: 0.88rem; color: var(--text-secondary); cursor: pointer; }
+    .checkbox-item input { accent-color: var(--gold); width: 15px; height: 15px; cursor: pointer; }
+    .salary-range { display: flex; flex-direction: column; gap: 0.75rem; }
+    .range-input { width: 100%; accent-color: var(--gold); cursor: pointer; }
+    .salary-labels { display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--text-muted); }
+    .upload-mini {
+      border: 2px dashed var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      background: rgba(201,168,76,0.02);
+    }
+    .upload-mini:hover { border-color: var(--gold); background: rgba(201,168,76,0.05); }
+    .upload-mini p { font-size: 0.82rem; color: var(--text-muted); margin-top: 0.5rem; }
+    .job-detail-header { display: flex; gap: 1.25rem; align-items: flex-start; margin-bottom: 1.75rem; padding-bottom: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .job-detail-icon { width: 64px; height: 64px; border-radius: var(--radius-md); background: rgba(201,168,76,0.1); display: flex; align-items: center; justify-content: center; font-size: 2rem; flex-shrink: 0; border: 1px solid var(--glass-border); }
+    .job-detail-info h2 { font-size: 1.35rem; margin-bottom: 0.4rem; font-family: 'Inter', sans-serif; font-weight: 700; }
+    .job-meta-row { display: flex; gap: 1.25rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .job-meta-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: var(--text-secondary); }
+    .job-detail-section { margin-bottom: 1.5rem; }
+    .job-detail-section h4 { font-size: 0.9rem; color: var(--gold-light); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.4rem; }
+    .job-detail-section ul { padding-left: 0; }
+    .job-detail-section ul li { padding: 0.35rem 0; font-size: 0.88rem; color: var(--text-secondary); display: flex; gap: 0.6rem; align-items: flex-start; }
+    .job-detail-section ul li::before { content: '▸'; color: var(--gold); flex-shrink: 0; }
+    .apply-box { background: rgba(201,168,76,0.05); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 1.5rem; text-align: center; }
+    .apply-box p { color: var(--text-muted); font-size: 0.82rem; margin-top: 0.5rem; margin-bottom: 1rem; }
+    @media (max-width: 900px) {
+      .jobs-layout { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+    }
+  </style>
+</head>
+<body>
+  <div class="animated-bg"></div>
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- NAVBAR -->
+  <nav class="navbar scrolled" id="navbar">
+    <div class="container">
+      <div class="nav-inner">
+        <a href="index.html" class="nav-logo">
+          <div class="logo-icon">✝</div>
+          <div class="logo-text">Church<span>Connect</span></div>
+        </a>
+        <div class="nav-links" id="navLinks">
+          <a href="index.html">Home</a>
+          <a href="churches.html">Churches</a>
+          <a href="jobs.html" class="active">Find Jobs</a>
+          <a href="pricing.html">For Churches</a>
+          <a href="index.html#about">About</a>
+        </div>
+        <div class="nav-cta">
+          <button class="btn btn-outline btn-sm" onclick="openModal('loginModal')">Log In</button>
+          <button class="btn btn-primary btn-sm" onclick="openModal('signupModal')">Get Started</button>
+          <div class="hamburger" id="hamburger" onclick="toggleNav()">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="sep">/</span>
+        <span>Find Jobs</span>
+      </div>
+      <h1>Find Your <span class="gold-text">Ministry Calling</span></h1>
+      <p>Browse 52,000+ open positions across American churches — or upload your resume and let our AI do the matching for you.</p>
+    </div>
+  </div>
+
+  <!-- ─── MAIN SEARCH BAR ─── -->
+  <div style="background:var(--navy-2); border-bottom:1px solid var(--glass-border); padding:1.75rem 0;" id="upload">
+    <div class="container">
+      <div class="jobs-filter-bar" style="margin-bottom:0;">
+        <input type="text" class="filter-input" id="jobSearchInput" placeholder="🔍  Job title, keyword, or skill..." oninput="filterJobs()" />
+        <input type="text" class="filter-input" id="locationInput" placeholder="📍  City, State, or Zip..." oninput="filterJobs()" />
+        <select class="filter-select" id="jobTypeFilter" onchange="filterJobs()">
+          <option value="">All Types</option>
+          <option>Full-Time</option>
+          <option>Part-Time</option>
+          <option>Volunteer</option>
+          <option>Contract</option>
+          <option>Internship</option>
+        </select>
+        <button class="btn btn-primary" onclick="filterJobs()">Search Jobs</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── MAIN LAYOUT ─── -->
+  <section class="section-pad">
+    <div class="container">
+      <div class="jobs-layout">
+
+        <!-- LEFT SIDEBAR -->
+        <aside class="sidebar">
+          <!-- Upload Mini Box -->
+          <div class="sidebar-section">
+            <div class="sidebar-label">🤖 AI Resume Match</div>
+            <div class="upload-mini" onclick="document.getElementById('sidebarResume').click()">
+              <div style="font-size:2rem;">📋</div>
+              <strong style="font-size:0.9rem;">Upload Resume for AI Matching</strong>
+              <p>Get personalized job suggestions based on your skills</p>
+              <input type="file" id="sidebarResume" style="display:none;" accept=".pdf,.doc,.docx" onchange="handleSidebarResume(event)" />
+            </div>
+            <div id="sidebarMatchResult" style="display:none; margin-top:1rem;">
+              <div style="background:rgba(34,197,94,0.1); border:1px solid rgba(34,197,94,0.3); border-radius:var(--radius-sm); padding:0.75rem; text-align:center;">
+                <div style="color:#22C55E; font-size:0.85rem; font-weight:600;">✅ Resume Analyzed!</div>
+                <div style="color:var(--text-muted); font-size:0.78rem; margin-top:0.25rem;">Showing AI-matched results</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Job Type Filter -->
+          <div class="sidebar-section">
+            <div class="sidebar-label">Job Type</div>
+            <div class="checkbox-list">
+              <label class="checkbox-item"><input type="checkbox" checked onchange="filterJobs()" /> Full-Time <span style="margin-left:auto; font-size:0.75rem; color:var(--text-muted);">8,420</span></label>
+              <label class="checkbox-item"><input type="checkbox" checked onchange="filterJobs()" /> Part-Time <span style="margin-left:auto; font-size:0.75rem; color:var(--text-muted);">12,100</span></label>
+              <label class="checkbox-item"><input type="checkbox" checked onchange="filterJobs()" /> Volunteer <span style="margin-left:auto; font-size:0.75rem; color:var(--text-muted);">22,800</span></label>
+              <label class="checkbox-item"><input type="checkbox" onchange="filterJobs()" /> Contract <span style="margin-left:auto; font-size:0.75rem; color:var(--text-muted);">3,400</span></label>
+              <label class="checkbox-item"><input type="checkbox" onchange="filterJobs()" /> Internship <span style="margin-left:auto; font-size:0.75rem; color:var(--text-muted);">5,280</span></label>
+            </div>
+          </div>
+
+          <!-- Role Category -->
+          <div class="sidebar-section">
+            <div class="sidebar-label">Ministry Role</div>
+            <div class="checkbox-list">
+              <label class="checkbox-item"><input type="checkbox" checked onchange="filterJobs()" /> Pastoral / Preaching</label>
+              <label class="checkbox-item"><input type="checkbox" checked onchange="filterJobs()" /> Youth Ministry</label>
+              <label class="checkbox-item"><input type="checkbox" checked onchange="filterJobs()" /> Worship / Music</label>
+              <label class="checkbox-item"><input type="checkbox" onchange="filterJobs()" /> Administration</label>
+              <label class="checkbox-item"><input type="checkbox" onchange="filterJobs()" /> Children's Ministry</label>
+              <label class="checkbox-item"><input type="checkbox" onchange="filterJobs()" /> Outreach / Missions</label>
+              <label class="checkbox-item"><input type="checkbox" onchange="filterJobs()" /> Communications</label>
+              <label class="checkbox-item"><input type="checkbox" onchange="filterJobs()" /> Counseling</label>
+              <label class="checkbox-item"><input type="checkbox" onchange="filterJobs()" /> Education / Discipleship</label>
+            </div>
+          </div>
+
+          <!-- Salary Range -->
+          <div class="sidebar-section">
+            <div class="sidebar-label">Salary Range</div>
+            <div class="salary-range">
+              <input type="range" class="range-input" min="0" max="150" value="150" id="salaryRange" oninput="updateSalary(this.value)" />
+              <div class="salary-labels">
+                <span>$0</span>
+                <span id="salaryMax">$150,000+</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Denomination -->
+          <div class="sidebar-section">
+            <div class="sidebar-label">Denomination</div>
+            <div class="checkbox-list">
+              <label class="checkbox-item"><input type="checkbox" onchange="filterJobs()" /> Non-Denominational</label>
+              <label class="checkbox-item"><input type="checkbox" onchange="filterJobs()" /> Baptist</label>
+              <label class="checkbox-item"><input type="checkbox" onchange="filterJobs()" /> Catholic</label>
+              <label class="checkbox-item"><input type="checkbox" onchange="filterJobs()" /> Methodist</label>
+              <label class="checkbox-item"><input type="checkbox" onchange="filterJobs()" /> Pentecostal</label>
+              <label class="checkbox-item"><input type="checkbox" onchange="filterJobs()" /> Presbyterian</label>
+              <label class="checkbox-item"><input type="checkbox" onchange="filterJobs()" /> Lutheran</label>
+            </div>
+          </div>
+
+          <!-- State -->
+          <div class="sidebar-section">
+            <div class="sidebar-label">State</div>
+            <select class="filter-select" style="width:100%;" id="stateJobFilter" onchange="filterJobs()">
+              <option value="">All States</option>
+              <option>Alabama</option><option>Alaska</option><option>Arizona</option>
+              <option>California</option><option>Colorado</option><option>Florida</option>
+              <option>Georgia</option><option>Illinois</option><option>Indiana</option>
+              <option>Michigan</option><option>Minnesota</option><option>New York</option>
+              <option>North Carolina</option><option>Ohio</option><option>Oregon</option>
+              <option>Pennsylvania</option><option>Tennessee</option><option>Texas</option>
+              <option>Virginia</option><option>Washington</option>
+            </select>
+          </div>
+
+          <button class="btn btn-outline" style="width:100%; justify-content:center;" onclick="resetFilters()">Clear All Filters</button>
+        </aside>
+
+        <!-- RIGHT: JOB LISTINGS -->
+        <div>
+          <!-- Sort Bar -->
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; flex-wrap:wrap; gap:0.75rem;">
+            <p id="jobCount" style="color:var(--text-muted); font-size:0.9rem;">
+              Showing <strong style="color:var(--gold);">24</strong> of <strong style="color:var(--gold);">52,000+</strong> positions
+            </p>
+            <select class="filter-select" id="jobSort" onchange="sortJobs()" style="min-width:160px;">
+              <option value="recent">Most Recent</option>
+              <option value="match">Best Match</option>
+              <option value="salary_hi">Salary: High to Low</option>
+              <option value="salary_lo">Salary: Low to High</option>
+            </select>
+          </div>
+
+          <!-- Job Cards -->
+          <div class="jobs-grid" id="jobsGrid" style="grid-template-columns:1fr;">
+            <!-- populated by JS -->
+          </div>
+
+          <!-- Load More -->
+          <div class="text-center" style="margin-top:2rem;">
+            <button class="btn btn-ghost btn-lg" onclick="loadMoreJobs()">Load More Jobs ↓</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="nav-logo"><div class="logo-icon">✝</div><div class="logo-text">Church<span>Connect</span></div></div>
+          <p>AI-powered ministry placement across America's 380,000+ churches.</p>
+          <div class="footer-socials">
+            <div class="social-btn">𝕏</div><div class="social-btn">f</div><div class="social-btn">in</div>
+          </div>
+        </div>
+        <div class="footer-col"><h4>For Seekers</h4><ul><li><a href="jobs.html">Browse Jobs</a></li><li><a href="jobs.html#upload">Upload Resume</a></li><li><a href="#">Career Resources</a></li></ul></div>
+        <div class="footer-col"><h4>For Churches</h4><ul><li><a href="pricing.html">View Plans</a></li><li><a href="#">Post a Job</a></li></ul></div>
+        <div class="footer-col"><h4>Company</h4><ul><li><a href="index.html#about">About</a></li><li><a href="#">Privacy</a></li><li><a href="#">Terms</a></li></ul></div>
+      </div>
+      <div class="footer-bottom"><span>© 2026 ChurchConnect. All rights reserved.</span></div>
+    </div>
+  </footer>
+
+  <!-- MODALS -->
+  <div class="modal-overlay" id="loginModal">
+    <div class="modal">
+      <div class="modal-header"><div><h3 style="font-family:'Cinzel',serif;">Welcome Back</h3></div><button class="modal-close" onclick="closeModal('loginModal')">✕</button></div>
+      <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input" placeholder="you@example.com" /></div>
+      <div class="form-group"><label class="form-label">Password</label><input type="password" class="form-input" placeholder="••••••••" /></div>
+      <button class="btn btn-primary" style="width:100%; justify-content:center;" onclick="showToast('Welcome back!','success'); closeModal('loginModal');">Sign In</button>
+    </div>
+  </div>
+  <div class="modal-overlay" id="signupModal">
+    <div class="modal">
+      <div class="modal-header"><div><h3 style="font-family:'Cinzel',serif;">Join ChurchConnect</h3></div><button class="modal-close" onclick="closeModal('signupModal')">✕</button></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">First Name</label><input type="text" class="form-input" placeholder="John" /></div>
+        <div class="form-group"><label class="form-label">Last Name</label><input type="text" class="form-input" placeholder="Doe" /></div>
+      </div>
+      <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input" placeholder="you@example.com" /></div>
+      <div class="form-group"><label class="form-label">Password</label><input type="password" class="form-input" placeholder="Create a password" /></div>
+      <button class="btn btn-primary" style="width:100%; justify-content:center;" onclick="showToast('Account created! Welcome 🎉','success'); closeModal('signupModal');">Create Account</button>
+    </div>
+  </div>
+
+  <!-- JOB DETAIL MODAL -->
+  <div class="modal-overlay" id="jobDetailModal">
+    <div class="modal" style="max-width:720px;">
+      <div class="modal-header">
+        <div id="jobDetailTitle"></div>
+        <button class="modal-close" onclick="closeModal('jobDetailModal')">✕</button>
+      </div>
+      <div id="jobDetailBody"></div>
+    </div>
+  </div>
+
+  <!-- APPLY MODAL -->
+  <div class="modal-overlay" id="applyModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div><h3 style="font-family:'Cinzel',serif;">Apply for Position</h3><p id="applyJobTitle" style="color:var(--gold); font-size:0.85rem; margin-top:0.25rem;"></p></div>
+        <button class="modal-close" onclick="closeModal('applyModal')">✕</button>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Full Name</label><input type="text" class="form-input" placeholder="Your full name" /></div>
+        <div class="form-group"><label class="form-label">Phone</label><input type="tel" class="form-input" placeholder="(555) 000-0000" /></div>
+      </div>
+      <div class="form-group"><label class="form-label">Email Address</label><input type="email" class="form-input" placeholder="you@example.com" /></div>
+      <div class="form-group">
+        <label class="form-label">Upload Resume (PDF, DOC, DOCX)</label>
+        <div class="upload-mini" onclick="document.getElementById('applyResume').click()" style="padding:1rem;">
+          <span id="applyResumeLabel">📎 Click to attach your resume</span>
+          <input type="file" id="applyResume" style="display:none;" accept=".pdf,.doc,.docx" onchange="this.previousElementSibling.textContent='✅ ' + this.files[0].name" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Cover Letter (optional)</label>
+        <textarea class="form-input form-textarea" placeholder="Tell us why you're a great fit for this ministry role..."></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Are you currently serving in a ministry role?</label>
+        <select class="form-input filter-select" style="width:100%;"><option>Yes, actively serving</option><option>Previously served</option><option>No, this would be my first</option></select>
+      </div>
+      <button class="btn btn-primary btn-lg" style="width:100%; justify-content:center;" onclick="submitApplication()">Submit Application 🙏</button>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      renderJobsGrid(jobsData);
+    });
+
+    let displayedJobs = 0;
+    const pageSize = 12;
+
+    function renderJobsGrid(data) {
+      const grid = document.getElementById('jobsGrid');
+      displayedJobs = Math.min(pageSize, data.length);
+      grid.innerHTML = data.slice(0, displayedJobs).map(j => jobCardHTML(j, true)).join('');
+      document.getElementById('jobCount').innerHTML = `Showing <strong style="color:var(--gold);">${displayedJobs}</strong> of <strong style="color:var(--gold);">52,000+</strong> positions`;
+    }
+
+    function loadMoreJobs() {
+      const grid = document.getElementById('jobsGrid');
+      const next = Math.min(displayedJobs + pageSize, jobsData.length);
+      for (let i = displayedJobs; i < next; i++) {
+        grid.insertAdjacentHTML('beforeend', jobCardHTML(jobsData[i], true));
+      }
+      displayedJobs = next;
+      if (displayedJobs >= jobsData.length) {
+        document.querySelector('button[onclick="loadMoreJobs()"]').textContent = 'All jobs loaded ✓';
+      }
+    }
+
+    function filterJobs() {
+      const q = (document.getElementById('jobSearchInput').value || '').toLowerCase();
+      let res = jobsData.filter(j => !q || j.title.toLowerCase().includes(q) || j.skills.some(s => s.toLowerCase().includes(q)));
+      renderJobsGrid(res);
+    }
+
+    function sortJobs() {
+      const sort = document.getElementById('jobSort').value;
+      let data = [...jobsData];
+      if (sort === 'salary_hi') data.sort((a,b) => b.salaryMax - a.salaryMax);
+      if (sort === 'salary_lo') data.sort((a,b) => a.salaryMax - b.salaryMax);
+      renderJobsGrid(data);
+    }
+
+    function resetFilters() {
+      document.getElementById('jobSearchInput').value = '';
+      document.getElementById('locationInput').value = '';
+      document.getElementById('jobTypeFilter').value = '';
+      document.getElementById('stateJobFilter').value = '';
+      renderJobsGrid(jobsData);
+      showToast('Filters cleared','info');
+    }
+
+    function updateSalary(val) {
+      document.getElementById('salaryMax').textContent = val >= 150 ? '$150,000+' : `$${(val*1000).toLocaleString()}`;
+    }
+
+    function handleSidebarResume(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      showToast('Analyzing your resume with AI...', 'info');
+      setTimeout(() => {
+        document.getElementById('sidebarMatchResult').style.display = 'block';
+        showToast('✨ AI match complete! Results updated.', 'success');
+        filterJobs();
+      }, 2200);
+    }
+
+    function openJobDetail(id) {
+      const j = jobsData.find(x => x.id === id);
+      if (!j) return;
+      const typeCls = {
+        'Full-Time':'badge-fulltime','Part-Time':'badge-parttime',
+        'Volunteer':'badge-volunteer','Contract':'badge-contract'
+      }[j.type] || 'badge-fulltime';
+      document.getElementById('jobDetailTitle').innerHTML = `
+        <div class="job-detail-header" style="border:none; padding:0; margin:0;">
+          <div class="job-detail-icon">${j.icon}</div>
+          <div class="job-detail-info">
+            <span class="job-type-badge ${typeCls}">${j.type}</span>
+            <h2>${j.title}</h2>
+            <div style="color:var(--gold); font-size:0.9rem; margin-top:0.25rem;">${j.church}</div>
+            <div style="color:var(--text-muted); font-size:0.82rem; margin-top:0.2rem;">📍 ${j.location}</div>
+          </div>
+        </div>
+      `;
+      document.getElementById('jobDetailBody').innerHTML = `
+        <div class="job-meta-row">
+          <span class="job-meta-item">💰 ${j.salary}</span>
+          <span class="job-meta-item">🗓️ ${j.denomination} Church</span>
+          <span class="job-meta-item">⏰ Posted ${j.posted}</span>
+        </div>
+        <div class="job-detail-section">
+          <h4>📋 Job Description</h4>
+          <p style="color:var(--text-secondary); line-height:1.8; font-size:0.9rem;">${j.fullDescription}</p>
+        </div>
+        <div class="job-detail-section">
+          <h4>✅ Key Responsibilities</h4>
+          <ul>${j.responsibilities.map(r => `<li>${r}</li>`).join('')}</ul>
+        </div>
+        <div class="job-detail-section">
+          <h4>🎓 Qualifications</h4>
+          <ul>${j.qualifications.map(q => `<li>${q}</li>`).join('')}</ul>
+        </div>
+        <div class="job-detail-section">
+          <h4>🔧 Skills & Tags</h4>
+          <div class="job-skills">${j.skills.map(s => `<span class="skill-chip">${s}</span>`).join('')}</div>
+        </div>
+        <div class="apply-box">
+          <div style="font-size:1.5rem; margin-bottom:0.5rem;">🙏</div>
+          <strong>Ready to serve at ${j.church}?</strong>
+          <p>Apply now and let your resume do the talking. Our AI will highlight how your skills match this role.</p>
+          <button class="btn btn-primary btn-lg" style="width:100%; justify-content:center;" onclick="closeModal('jobDetailModal'); openApplyModal(${j.id}, '${j.title} — ${j.church}')">Apply for This Position</button>
+        </div>
+      `;
+      openModal('jobDetailModal');
+    }
+
+    function openApplyModal(id, title) {
+      document.getElementById('applyJobTitle').textContent = title;
+      openModal('applyModal');
+    }
+
+    function submitApplication() {
+      closeModal('applyModal');
+      showToast('🎉 Application submitted successfully! The church will contact you soon.', 'success');
+    }
+  </script>
+</body>
+</html>
