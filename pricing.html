@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pricing Plans — ChurchConnect | AI Job Matching for Churches</title>
+  <meta name="description" content="Affordable pricing plans for American churches. Post jobs, access AI-powered candidate matching, and find the right ministry professionals for your congregation." />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛪</text></svg>" />
+  <style>
+    .toggle-wrap { display:flex; align-items:center; gap:1rem; justify-content:center; margin-bottom:2.5rem; }
+    .toggle-label { font-size:0.9rem; color:var(--text-secondary); }
+    .toggle-label.active { color:var(--gold-light); font-weight:600; }
+    .toggle {
+      width: 52px; height: 28px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 999px;
+      position: relative;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .toggle.on { background: rgba(201,168,76,0.25); border-color: var(--gold-dark); }
+    .toggle-dot {
+      position: absolute;
+      top: 4px; left: 4px;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: var(--gold);
+      transition: var(--transition);
+    }
+    .toggle.on .toggle-dot { left: 28px; }
+    .save-badge {
+      background: rgba(34,197,94,0.15);
+      border: 1px solid rgba(34,197,94,0.3);
+      color: #22C55E;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .feature-compare {
+      background: var(--navy-card);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-top: 4rem;
+    }
+    .compare-head {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 0;
+      background: var(--navy-2);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .compare-head-cell {
+      padding: 1.25rem 1.5rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+    .compare-head-cell:first-child { text-align: left; }
+    .compare-head-cell.featured-col { background: rgba(201,168,76,0.06); color: var(--gold-light); }
+    .compare-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      transition: var(--transition);
+    }
+    .compare-row:last-child { border-bottom: none; }
+    .compare-row:hover { background: rgba(255,255,255,0.02); }
+    .compare-cell {
+      padding: 1rem 1.5rem;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .compare-cell:first-child { text-align: left; justify-content: flex-start; color: var(--text-primary); }
+    .compare-cell.featured-col { background: rgba(201,168,76,0.03); }
+    .check-yes { color: var(--success); font-size:1.1rem; }
+    .check-no { color: var(--text-muted); font-size:1.1rem; }
+    .faq-item {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      margin-bottom: 0.75rem;
+    }
+    .faq-question {
+      padding: 1.25rem 1.5rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: var(--transition);
+    }
+    .faq-question:hover { color: var(--gold-light); }
+    .faq-arrow { transition: var(--transition); font-size: 0.85rem; color: var(--gold); }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+    .faq-answer.open { max-height: 300px; }
+    .faq-answer-inner {
+      padding: 0 1.5rem 1.25rem;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      line-height: 1.8;
+    }
+    @media (max-width:768px) {
+      .compare-head, .compare-row { grid-template-columns: 1.5fr 1fr 1fr; }
+      .compare-head-cell:nth-child(4), .compare-cell:nth-child(4) { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="animated-bg"></div>
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- NAVBAR -->
+  <nav class="navbar scrolled" id="navbar">
+    <div class="container">
+      <div class="nav-inner">
+        <a href="index.html" class="nav-logo">
+          <div class="logo-icon">✝</div>
+          <div class="logo-text">Church<span>Connect</span></div>
+        </a>
+        <div class="nav-links" id="navLinks">
+          <a href="index.html">Home</a>
+          <a href="churches.html">Churches</a>
+          <a href="jobs.html">Find Jobs</a>
+          <a href="pricing.html" class="active">For Churches</a>
+          <a href="index.html#about">About</a>
+        </div>
+        <div class="nav-cta">
+          <button class="btn btn-outline btn-sm" onclick="openModal('loginModal')">Log In</button>
+          <button class="btn btn-primary btn-sm" onclick="openModal('signupModal')">Get Started</button>
+          <div class="hamburger" id="hamburger" onclick="toggleNav()">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="sep">/</span>
+        <span>Pricing</span>
+      </div>
+      <h1>Simple, <span class="gold-text">Transparent</span> Pricing</h1>
+      <p>Affordable plans designed specifically for churches of every size — from small rural congregations to mega-churches. No hidden fees, cancel anytime.</p>
+    </div>
+  </div>
+
+  <!-- ─── PRICING ─── -->
+  <section class="section-pad pricing-section">
+    <div class="container">
+      <!-- Billing Toggle -->
+      <div class="toggle-wrap">
+        <span class="toggle-label active" id="monthlyLabel">Monthly</span>
+        <div class="toggle" id="billingToggle" onclick="toggleBilling()">
+          <div class="toggle-dot"></div>
+        </div>
+        <span class="toggle-label" id="annualLabel">Annual <span class="save-badge">Save 25%</span></span>
+      </div>
+
+      <div class="pricing-grid">
+
+        <!-- STARTER -->
+        <div class="pricing-card fade-up">
+          <div class="pricing-icon">🌱</div>
+          <div class="pricing-name">Starter</div>
+          <p style="color:var(--text-muted); font-size:0.85rem;">Perfect for small churches getting started</p>
+          <div class="pricing-price">
+            <span class="currency">$</span>
+            <span class="amount" id="starter-price">29</span>
+            <span class="period" id="starter-period">/mo</span>
+          </div>
+          <p class="pricing-desc">Up to 3 active job listings with basic AI matching.</p>
+          <div class="pricing-features">
+            <div class="pricing-feature"><span class="check">✓</span> 3 Active Job Listings</div>
+            <div class="pricing-feature"><span class="check">✓</span> AI Resume Screening</div>
+            <div class="pricing-feature"><span class="check">✓</span> Basic Candidate Profiles</div>
+            <div class="pricing-feature"><span class="check">✓</span> Email Notifications</div>
+            <div class="pricing-feature"><span class="check">✓</span> Church Directory Listing</div>
+            <div class="pricing-feature"><span class="check">✓</span> Standard Support</div>
+            <div class="pricing-feature"><span class="cross" style="color:var(--text-muted);">✗</span> <span style="color:var(--text-muted);">Advanced AI Match Scoring</span></div>
+            <div class="pricing-feature"><span class="cross" style="color:var(--text-muted);">✗</span> <span style="color:var(--text-muted);">Video Interview Tools</span></div>
+            <div class="pricing-feature"><span class="cross" style="color:var(--text-muted);">✗</span> <span style="color:var(--text-muted);">Dedicated Account Manager</span></div>
+          </div>
+          <button class="btn btn-outline" style="width:100%; justify-content:center;" onclick="selectPlan('Starter')">Get Started Free</button>
+          <p style="text-align:center; color:var(--text-muted); font-size:0.75rem; margin-top:0.75rem;">30-day free trial · No credit card required</p>
+        </div>
+
+        <!-- GROWTH (FEATURED) -->
+        <div class="pricing-card featured fade-up stagger-1">
+          <div class="popular-badge">Most Popular</div>
+          <div class="pricing-icon">⛪</div>
+          <div class="pricing-name">Growth</div>
+          <p style="color:var(--text-muted); font-size:0.85rem;">For growing churches ready to hire with confidence</p>
+          <div class="pricing-price">
+            <span class="currency">$</span>
+            <span class="amount" id="growth-price">79</span>
+            <span class="period" id="growth-period">/mo</span>
+          </div>
+          <p class="pricing-desc">Unlimited listings with full AI-powered candidate matching.</p>
+          <div class="pricing-features">
+            <div class="pricing-feature"><span class="check">✓</span> Unlimited Job Listings</div>
+            <div class="pricing-feature"><span class="check">✓</span> Advanced AI Match Scoring</div>
+            <div class="pricing-feature"><span class="check">✓</span> Full Candidate Profiles & Resume Access</div>
+            <div class="pricing-feature"><span class="check">✓</span> Candidate Skills Dashboard</div>
+            <div class="pricing-feature"><span class="check">✓</span> Featured Church Listing</div>
+            <div class="pricing-feature"><span class="check">✓</span> Applicant Tracking System (ATS)</div>
+            <div class="pricing-feature"><span class="check">✓</span> Email & SMS Notifications</div>
+            <div class="pricing-feature"><span class="check">✓</span> Priority Support (48hr)</div>
+            <div class="pricing-feature"><span class="cross" style="color:var(--text-muted);">✗</span> <span style="color:var(--text-muted);">Video Interview Suite</span></div>
+            <div class="pricing-feature"><span class="cross" style="color:var(--text-muted);">✗</span> <span style="color:var(--text-muted);">Dedicated Account Manager</span></div>
+          </div>
+          <button class="btn btn-primary" style="width:100%; justify-content:center;" onclick="selectPlan('Growth')">Start Free Trial</button>
+          <p style="text-align:center; color:var(--text-muted); font-size:0.75rem; margin-top:0.75rem;">30-day free trial · No credit card required</p>
+        </div>
+
+        <!-- ENTERPRISE -->
+        <div class="pricing-card fade-up stagger-2">
+          <div class="pricing-icon">🏛️</div>
+          <div class="pricing-name">Enterprise</div>
+          <p style="color:var(--text-muted); font-size:0.85rem;">For large churches, dioceses, and multi-campus organizations</p>
+          <div class="pricing-price">
+            <span class="currency">$</span>
+            <span class="amount" id="enterprise-price">199</span>
+            <span class="period" id="enterprise-period">/mo</span>
+          </div>
+          <p class="pricing-desc">Full-suite hiring solution with white-glove service.</p>
+          <div class="pricing-features">
+            <div class="pricing-feature"><span class="check">✓</span> Everything in Growth</div>
+            <div class="pricing-feature"><span class="check">✓</span> Video Interview Suite</div>
+            <div class="pricing-feature"><span class="check">✓</span> Background Check Integration</div>
+            <div class="pricing-feature"><span class="check">✓</span> Multi-Campus Management</div>
+            <div class="pricing-feature"><span class="check">✓</span> Custom Branded Career Page</div>
+            <div class="pricing-feature"><span class="check">✓</span> Advanced Analytics & Reports</div>
+            <div class="pricing-feature"><span class="check">✓</span> API Access & Integrations</div>
+            <div class="pricing-feature"><span class="check">✓</span> Dedicated Account Manager</div>
+            <div class="pricing-feature"><span class="check">✓</span> Priority Phone Support</div>
+            <div class="pricing-feature"><span class="check">✓</span> Onboarding & Training</div>
+          </div>
+          <button class="btn btn-outline" style="width:100%; justify-content:center;" onclick="openModal('contactModal')">Contact Sales</button>
+          <p style="text-align:center; color:var(--text-muted); font-size:0.75rem; margin-top:0.75rem;">Custom pricing available for large dioceses</p>
+        </div>
+      </div>
+
+      <!-- Free tier callout -->
+      <div style="margin-top:2rem; background:rgba(201,168,76,0.05); border:1px solid var(--glass-border); border-radius:var(--radius-md); padding:1.5rem; display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap;">
+        <div style="font-size:2rem;">🙌</div>
+        <div style="flex:1;">
+          <strong>Free for Small Congregations</strong>
+          <p style="color:var(--text-muted); font-size:0.85rem; margin-top:0.25rem;">Churches with fewer than 50 members can list 1 job and access basic matching completely free — forever. Ministry matters, and we want every church to have access.</p>
+        </div>
+        <button class="btn btn-primary" onclick="selectPlan('Free')">List 1 Job Free →</button>
+      </div>
+
+      <!-- Feature Comparison Table -->
+      <div class="section-header text-center centered fade-up" style="margin-top:4rem;">
+        <span class="section-label">Compare Plans</span>
+        <h2>Full Feature <span class="gold-text">Comparison</span></h2>
+        <div class="gold-line"></div>
+      </div>
+
+      <div class="feature-compare fade-up">
+        <div class="compare-head">
+          <div class="compare-head-cell">Feature</div>
+          <div class="compare-head-cell">Starter</div>
+          <div class="compare-head-cell featured-col">Growth ⭐</div>
+          <div class="compare-head-cell">Enterprise</div>
+        </div>
+        <div id="compareRows">
+          <!-- populated by JS -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── TESTIMONIALS ─── -->
+  <section class="section-pad testimonials-section">
+    <div class="container">
+      <div class="section-header text-center centered fade-up">
+        <span class="section-label">Church Stories</span>
+        <h2>What <span class="gold-text">Church Leaders</span> Say</h2>
+        <div class="gold-line"></div>
+      </div>
+      <div class="testimonials-grid">
+        <div class="testimonial-card fade-up">
+          <div class="stars">★★★★★</div>
+          <p class="testimonial-text">"We needed a Worship Director urgently. Within 48 hours of posting on ChurchConnect, we had 12 qualified applications. The AI matching was remarkably accurate. Hired within 2 weeks!"</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">LT</div>
+            <div>
+              <div class="author-name">Pastor Linda Thompson</div>
+              <div class="author-role">First Baptist Church, Nashville, TN</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card fade-up stagger-1">
+          <div class="stars">★★★★★</div>
+          <p class="testimonial-text">"The Enterprise plan's background check integration and video interview suite saved us enormous time. Managing hires across our 5 campuses is now seamless. Worth every penny."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">RD</div>
+            <div>
+              <div class="author-name">Rev. Robert Davis</div>
+              <div class="author-role">Lakewood Community Church, Houston, TX</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card fade-up stagger-2">
+          <div class="stars">★★★★★</div>
+          <p class="testimonial-text">"As a small rural church, the Growth plan is perfect. We found our Children's Ministry Director who drove 45 minutes to serve with us. ChurchConnect connected us across distances."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">AM</div>
+            <div>
+              <div class="author-name">Pastor Anna Miller</div>
+              <div class="author-role">Prairie View Church, Iowa</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FAQ ─── -->
+  <section class="section-pad" style="background:var(--navy-2);">
+    <div class="container" style="max-width:800px;">
+      <div class="section-header text-center centered fade-up">
+        <span class="section-label">Questions?</span>
+        <h2>Frequently Asked <span class="gold-text">Questions</span></h2>
+        <div class="gold-line"></div>
+      </div>
+      <div id="faqList">
+        <!-- populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CTA ─── -->
+  <section class="section-pad cta-section">
+    <div class="container">
+      <div class="cta-inner text-center">
+        <span class="section-label" style="display:block; text-align:center;">Ready to Hire?</span>
+        <h2>Start Your <span class="gold-text">Free Trial</span> Today</h2>
+        <p>Join 12,000+ American churches already using ChurchConnect to find passionate ministry professionals. No credit card required to start.</p>
+        <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; margin-top:1.5rem;">
+          <button class="btn btn-primary btn-lg" onclick="selectPlan('Growth')">Start 30-Day Free Trial</button>
+          <button class="btn btn-ghost btn-lg" onclick="openModal('contactModal')">Schedule a Demo</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="nav-logo"><div class="logo-icon">✝</div><div class="logo-text">Church<span>Connect</span></div></div>
+          <p>Empowering America's churches through AI-driven talent matching.</p>
+          <div class="footer-socials"><div class="social-btn">𝕏</div><div class="social-btn">f</div><div class="social-btn">in</div></div>
+        </div>
+        <div class="footer-col"><h4>For Seekers</h4><ul><li><a href="jobs.html">Browse Jobs</a></li><li><a href="jobs.html">Upload Resume</a></li></ul></div>
+        <div class="footer-col"><h4>For Churches</h4><ul><li><a href="pricing.html">View Plans</a></li><li><a href="churches.html">Directory</a></li></ul></div>
+        <div class="footer-col"><h4>Company</h4><ul><li><a href="index.html#about">About</a></li><li><a href="#">Privacy</a></li><li><a href="#">Terms</a></li></ul></div>
+      </div>
+      <div class="footer-bottom"><span>© 2026 ChurchConnect. All rights reserved.</span></div>
+    </div>
+  </footer>
+
+  <!-- MODALS -->
+  <div class="modal-overlay" id="loginModal">
+    <div class="modal">
+      <div class="modal-header"><div><h3 style="font-family:'Cinzel',serif;">Welcome Back</h3></div><button class="modal-close" onclick="closeModal('loginModal')">✕</button></div>
+      <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input" placeholder="you@example.com" /></div>
+      <div class="form-group"><label class="form-label">Password</label><input type="password" class="form-input" placeholder="••••••••" /></div>
+      <button class="btn btn-primary" style="width:100%; justify-content:center;" onclick="showToast('Welcome back!','success'); closeModal('loginModal');">Sign In</button>
+    </div>
+  </div>
+  <div class="modal-overlay" id="signupModal">
+    <div class="modal">
+      <div class="modal-header"><div><h3 style="font-family:'Cinzel',serif;">List Your Church</h3><p style="color:var(--text-muted); font-size:0.85rem; margin-top:0.25rem;" id="signupPlanLabel"></p></div><button class="modal-close" onclick="closeModal('signupModal')">✕</button></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Church Name</label><input type="text" class="form-input" placeholder="Grace Community Church" /></div>
+        <div class="form-group"><label class="form-label">State</label><select class="form-input filter-select" style="width:100%;"><option>Select State</option><option>Texas</option><option>California</option><option>Florida</option><option>New York</option></select></div>
+      </div>
+      <div class="form-group"><label class="form-label">Your Name</label><input type="text" class="form-input" placeholder="Pastor John Doe" /></div>
+      <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input" placeholder="pastor@church.org" /></div>
+      <div class="form-group"><label class="form-label">Congregation Size</label><select class="form-input filter-select" style="width:100%;"><option>Under 50</option><option>50–200</option><option>200–1,000</option><option>1,000–5,000</option><option>5,000+</option></select></div>
+      <button class="btn btn-primary" style="width:100%; justify-content:center;" onclick="showToast('Welcome to ChurchConnect! Redirecting to setup...','success'); closeModal('signupModal');">Create Church Account</button>
+    </div>
+  </div>
+  <!-- CONTACT / DEMO MODAL -->
+  <div class="modal-overlay" id="contactModal">
+    <div class="modal">
+      <div class="modal-header"><div><h3 style="font-family:'Cinzel',serif;">Schedule a Demo</h3><p style="color:var(--text-muted); font-size:0.85rem;">Our team will walk you through the platform</p></div><button class="modal-close" onclick="closeModal('contactModal')">✕</button></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Your Name</label><input type="text" class="form-input" placeholder="Pastor John Doe" /></div>
+        <div class="form-group"><label class="form-label">Church Name</label><input type="text" class="form-input" placeholder="Grace Community" /></div>
+      </div>
+      <div class="form-group"><label class="form-label">Email Address</label><input type="email" class="form-input" placeholder="pastor@church.org" /></div>
+      <div class="form-group"><label class="form-label">Phone Number</label><input type="tel" class="form-input" placeholder="(555) 000-0000" /></div>
+      <div class="form-group">
+        <label class="form-label">Congregation Size</label>
+        <select class="form-input filter-select" style="width:100%;"><option>Under 100</option><option>100–500</option><option>500–2,000</option><option>2,000+</option></select>
+      </div>
+      <div class="form-group"><label class="form-label">What are you looking for?</label><textarea class="form-input form-textarea" placeholder="Tell us about your hiring needs..."></textarea></div>
+      <button class="btn btn-primary" style="width:100%; justify-content:center;" onclick="showToast('Demo request received! We will contact you within 24 hours.','success'); closeModal('contactModal');">Request Demo 🗓️</button>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="app.js"></script>
+  <script>
+    let isAnnual = false;
+
+    const prices = {
+      starter: { monthly: 29, annual: 22 },
+      growth:  { monthly: 79, annual: 59 },
+      enterprise: { monthly: 199, annual: 149 }
+    };
+
+    function toggleBilling() {
+      isAnnual = !isAnnual;
+      const toggle = document.getElementById('billingToggle');
+      toggle.classList.toggle('on', isAnnual);
+      document.getElementById('monthlyLabel').classList.toggle('active', !isAnnual);
+      document.getElementById('annualLabel').classList.toggle('active', isAnnual);
+      const period = isAnnual ? '/mo, billed annually' : '/mo';
+      for (const [key, val] of Object.entries(prices)) {
+        document.getElementById(`${key}-price`).textContent = isAnnual ? val.annual : val.monthly;
+        document.getElementById(`${key}-period`).textContent = period;
+      }
+    }
+
+    function selectPlan(plan) {
+      document.getElementById('signupPlanLabel').textContent = `Selected plan: ${plan}`;
+      openModal('signupModal');
+    }
+
+    // Feature comparison table
+    const compareFeatures = [
+      { name: 'Active Job Listings', starter: '3', growth: 'Unlimited', enterprise: 'Unlimited' },
+      { name: 'AI Resume Screening', starter: '✓', growth: '✓', enterprise: '✓' },
+      { name: 'AI Match Scoring', starter: 'Basic', growth: 'Advanced', enterprise: 'Premium' },
+      { name: 'Candidate Profiles', starter: 'Basic', growth: 'Full Access', enterprise: 'Full Access' },
+      { name: 'Applicant Tracking (ATS)', starter: '✗', growth: '✓', enterprise: '✓' },
+      { name: 'Video Interviews', starter: '✗', growth: '✗', enterprise: '✓' },
+      { name: 'Background Checks', starter: '✗', growth: 'Add-on', enterprise: 'Included' },
+      { name: 'Church Directory Listing', starter: 'Standard', growth: 'Featured', enterprise: 'Premium Spotlight' },
+      { name: 'Custom Career Page', starter: '✗', growth: '✗', enterprise: '✓' },
+      { name: 'Multi-Campus Support', starter: '✗', growth: '✗', enterprise: '✓' },
+      { name: 'Analytics Dashboard', starter: 'Basic', growth: 'Advanced', enterprise: 'Custom Reports' },
+      { name: 'API Access', starter: '✗', growth: '✗', enterprise: '✓' },
+      { name: 'Support', starter: 'Email', growth: 'Priority (48hr)', enterprise: 'Dedicated Manager' },
+    ];
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('compareRows').innerHTML = compareFeatures.map(f => `
+        <div class="compare-row">
+          <div class="compare-cell">${f.name}</div>
+          <div class="compare-cell">${f.starter === '✓' ? '<span class="check-yes">✓</span>' : f.starter === '✗' ? '<span class="check-no">✗</span>' : f.starter}</div>
+          <div class="compare-cell featured-col">${f.growth === '✓' ? '<span class="check-yes">✓</span>' : f.growth === '✗' ? '<span class="check-no">✗</span>' : '<strong style="color:var(--gold-light);">' + f.growth + '</strong>'}</div>
+          <div class="compare-cell">${f.enterprise === '✓' ? '<span class="check-yes">✓</span>' : f.enterprise === '✗' ? '<span class="check-no">✗</span>' : f.enterprise}</div>
+        </div>
+      `).join('');
+
+      // FAQ
+      const faqs = [
+        { q: 'Is there a free trial available?', a: 'Yes! All paid plans include a 30-day free trial with no credit card required. You can explore all features and list jobs during the trial period.' },
+        { q: 'Can I cancel my subscription at any time?', a: 'Absolutely. ChurchConnect is cancel-any-time — no long-term contracts, no cancellation fees. Your listings remain active until the end of your billing period.' },
+        { q: 'How does the AI resume matching work?', a: 'Our AI engine parses uploaded resumes and extracts skills, experience, theological training, and spiritual gifts. It then compares these against your job requirements and generates a compatibility score for each candidate — saving you hours of manual screening.' },
+        { q: 'Do I need technical knowledge to use ChurchConnect?', a: 'Not at all. ChurchConnect is designed for ministry leaders, not IT professionals. Setup takes less than 15 minutes, and our onboarding team is happy to walk you through the platform.' },
+        { q: 'What denominations are supported?', a: 'ChurchConnect is fully non-denominational and supports all Christian denominations — Baptist, Catholic, Methodist, Lutheran, Pentecostal, Episcopal, Non-Denominational, Seventh-Day Adventist, and 100+ others.' },
+        { q: 'Is my church\'s data secure?', a: 'Yes. We use enterprise-grade encryption (AES-256) for all data at rest and in transit. We comply with SOC 2 Type II standards and never sell your data to third parties.' },
+        { q: 'Can multiple staff members manage the account?', a: 'Growth and Enterprise plans support multiple admin users. Enterprise includes unlimited team seats with custom permission roles.' },
+      ];
+
+      document.getElementById('faqList').innerHTML = faqs.map((faq, i) => `
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(${i})">
+            ${faq.q}
+            <span class="faq-arrow" id="arrow-${i}">▾</span>
+          </div>
+          <div class="faq-answer" id="faq-${i}">
+            <div class="faq-answer-inner">${faq.a}</div>
+          </div>
+        </div>
+      `).join('');
+    });
+
+    function toggleFaq(i) {
+      const ans = document.getElementById(`faq-${i}`);
+      const arrow = document.getElementById(`arrow-${i}`);
+      const isOpen = ans.classList.contains('open');
+      document.querySelectorAll('.faq-answer').forEach(el => el.classList.remove('open'));
+      document.querySelectorAll('.faq-arrow').forEach(el => el.style.transform = 'rotate(0deg)');
+      if (!isOpen) {
+        ans.classList.add('open');
+        arrow.style.transform = 'rotate(180deg)';
+      }
+    }
+  </script>
+</body>
+</html>
