@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ChurchConnect — AI-Powered Ministry Job Placement for American Churches</title>
+  <meta name="description" content="ChurchConnect connects talented individuals to ministry positions across thousands of American churches using AI-powered resume matching. Upload your resume, get matched to your perfect ministry role." />
+  <meta property="og:title" content="ChurchConnect — Connect Faith with Opportunity" />
+  <meta property="og:description" content="AI-powered job matching for American churches. Upload your resume and discover your calling." />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛪</text></svg>" />
+</head>
+<body>
+  <div class="animated-bg"></div>
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- ─── NAVBAR ─── -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <div class="nav-inner">
+        <a href="index.html" class="nav-logo">
+          <div class="logo-icon">✝</div>
+          <div class="logo-text">Church<span>Connect</span></div>
+        </a>
+        <div class="nav-links" id="navLinks">
+          <a href="index.html" class="active">Home</a>
+          <a href="churches.html">Churches</a>
+          <a href="jobs.html">Find Jobs</a>
+          <a href="pricing.html">For Churches</a>
+          <a href="#about">About</a>
+        </div>
+        <div class="nav-cta">
+          <button class="btn btn-outline btn-sm" onclick="openModal('loginModal')">Log In</button>
+          <button class="btn btn-primary btn-sm" onclick="openModal('signupModal')">Get Started</button>
+          <div class="hamburger" id="hamburger" onclick="toggleNav()">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ─── HERO ─── -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="dot"></span>
+          AI-Powered Ministry Placement Platform
+        </div>
+        <h1>
+          Connect <span class="gold-text">Faith</span> With<br/>
+          Meaningful Opportunity
+        </h1>
+        <p class="lead">
+          ChurchConnect bridges the gap between talented individuals and America's 380,000+ churches. Upload your resume — our AI analyzes your skills and matches you to ministry roles where your gifts truly belong.
+        </p>
+        <div class="hero-actions">
+          <a href="jobs.html" class="btn btn-primary btn-lg">
+            🔍 Find My Ministry Role
+          </a>
+          <a href="pricing.html" class="btn btn-ghost btn-lg">
+            ⛪ I Represent a Church
+          </a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="num" data-target="380000">0</div>
+            <div class="label">Churches Listed</div>
+          </div>
+          <div class="hero-stat">
+            <div class="num" data-target="52000">0</div>
+            <div class="label">Active Positions</div>
+          </div>
+          <div class="hero-stat">
+            <div class="num" data-target="94">0</div>
+            <div class="label">% Match Accuracy</div>
+          </div>
+          <div class="hero-stat">
+            <div class="num" data-target="12000">0</div>
+            <div class="label">Placements Made</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-scroll" onclick="document.querySelector('.stats-banner').scrollIntoView({behavior:'smooth'})">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ─── STATS BANNER ─── -->
+  <div class="stats-banner">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-item fade-up">
+          <span class="number" data-target="50">50</span>
+          <div class="stat-label">States Covered Across the USA</div>
+        </div>
+        <div class="stat-item fade-up stagger-1">
+          <span class="number" data-target="120">120+</span>
+          <div class="stat-label">Denominations Supported</div>
+        </div>
+        <div class="stat-item fade-up stagger-2">
+          <span class="number" data-target="48">48 hrs</span>
+          <div class="stat-label">Average Match Time</div>
+        </div>
+        <div class="stat-item fade-up stagger-3">
+          <span class="number" data-target="98">98%</span>
+          <div class="stat-label">Church Satisfaction Rate</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── HOW IT WORKS ─── -->
+  <section class="section-pad" id="how-it-works">
+    <div class="container">
+      <div class="section-header centered text-center fade-up">
+        <span class="section-label">Simple Process</span>
+        <h2>How <span class="gold-text">ChurchConnect</span> Works</h2>
+        <div class="gold-line"></div>
+        <p>Our AI-driven platform makes finding your ministry calling effortless — in just four steps.</p>
+      </div>
+      <div class="hiw-grid">
+        <div class="hiw-card fade-up stagger-1">
+          <span class="hiw-num">01</span>
+          <div class="hiw-icon">📄</div>
+          <h3>Upload Your Resume</h3>
+          <p>Submit your resume in PDF, DOC, or DOCX format. Our system accepts any format and parses it instantly.</p>
+        </div>
+        <div class="hiw-card fade-up stagger-2">
+          <span class="hiw-num">02</span>
+          <div class="hiw-icon">🤖</div>
+          <h3>AI Skills Analysis</h3>
+          <p>Our advanced AI extracts your skills, experience, education, and spiritual gifts from your resume automatically.</p>
+        </div>
+        <div class="hiw-card fade-up stagger-3">
+          <span class="hiw-num">03</span>
+          <div class="hiw-icon">✨</div>
+          <h3>Smart Job Matching</h3>
+          <p>Receive a curated list of ministry positions ranked by compatibility score from churches across America.</p>
+        </div>
+        <div class="hiw-card fade-up stagger-4">
+          <span class="hiw-num">04</span>
+          <div class="hiw-icon">🤝</div>
+          <h3>Connect & Apply</h3>
+          <p>Apply directly to churches, view full job descriptions, and schedule interviews — all within the platform.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FEATURED CHURCHES ─── -->
+  <section class="section-pad" id="featured-churches" style="background: var(--navy-2);">
+    <div class="container">
+      <div class="section-header fade-up" style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:1rem;">
+        <div>
+          <span class="section-label">Featured Partners</span>
+          <h2>Explore <span class="gold-text">Top Churches</span></h2>
+        </div>
+        <a href="churches.html" class="btn btn-outline">View All Churches →</a>
+      </div>
+      <div class="churches-grid" id="featuredChurches">
+        <!-- populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── RESUME UPLOAD SECTION ─── -->
+  <section class="section-pad upload-section" id="resume-match">
+    <div class="container">
+      <div class="upload-grid">
+        <div class="fade-up">
+          <span class="section-label">AI Resume Matching</span>
+          <h2>Upload Your <span class="gold-text">Resume</span> &amp; Discover Your Calling</h2>
+          <div class="gold-line" style="margin-left:0;"></div>
+          <p style="color:var(--text-secondary); margin-bottom:1.5rem; line-height:1.8;">
+            Our proprietary AI engine reads your resume and identifies your strongest skills, spiritual gifts, and relevant experience — then matches you instantly against thousands of open ministry positions across American churches.
+          </p>
+          <div class="upload-feature-img">
+            <img src="job_match_illustration_1791048232115.jpg" alt="AI-powered job matching illustration" />
+          </div>
+        </div>
+        <div class="fade-up stagger-2">
+          <div class="upload-box" id="uploadBox" onclick="document.getElementById('resumeInput').click()">
+            <div id="uploadDefault">
+              <div class="upload-icon">📋</div>
+              <h3>Drop Your Resume Here</h3>
+              <p>Drag &amp; drop or click to browse your files</p>
+              <input type="file" id="resumeInput" accept=".pdf,.doc,.docx,.txt" onchange="handleResumeUpload(event)" />
+              <button class="btn btn-primary" onclick="event.stopPropagation(); document.getElementById('resumeInput').click()">
+                📤 Browse Files
+              </button>
+              <div class="file-types">
+                <span class="file-type-badge">PDF</span>
+                <span class="file-type-badge">DOC</span>
+                <span class="file-type-badge">DOCX</span>
+                <span class="file-type-badge">TXT</span>
+              </div>
+            </div>
+            <div class="upload-progress" id="uploadProgress">
+              <div class="upload-icon">⚙️</div>
+              <h3 id="progressTitle">Analyzing Your Resume...</h3>
+              <p id="progressStep">Extracting skills and experience</p>
+              <div class="progress-bar-wrap">
+                <div class="progress-bar-fill" id="progressFill"></div>
+              </div>
+              <p id="progressPct" style="font-size:0.85rem; color:var(--gold);">0%</p>
+            </div>
+          </div>
+          <div class="job-results" id="jobResults" style="display:none;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+              <h3 style="font-size:1rem;">🎯 Your Top Matches</h3>
+              <button class="btn btn-sm btn-outline" onclick="resetUpload()">Upload New</button>
+            </div>
+            <div id="matchCards"></div>
+            <a href="jobs.html" class="btn btn-primary" style="width:100%; justify-content:center; margin-top:1rem;">
+              View All Matched Jobs →
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── JOB LISTINGS PREVIEW ─── -->
+  <section class="section-pad jobs-section">
+    <div class="container">
+      <div class="section-header text-center centered fade-up">
+        <span class="section-label">Open Positions</span>
+        <h2>Latest <span class="gold-text">Ministry Jobs</span></h2>
+        <div class="gold-line"></div>
+        <p>Browse thousands of open positions across churches in all 50 states.</p>
+      </div>
+      <div class="jobs-grid" id="featuredJobs" style="margin-top:2.5rem;">
+        <!-- populated by JS -->
+      </div>
+      <div class="text-center" style="margin-top:2.5rem;">
+        <a href="jobs.html" class="btn btn-primary btn-lg">Browse All 52,000+ Jobs →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── TESTIMONIALS ─── -->
+  <section class="section-pad testimonials-section" id="about">
+    <div class="container">
+      <div class="section-header text-center centered fade-up">
+        <span class="section-label">Success Stories</span>
+        <h2>What <span class="gold-text">Our Community</span> Says</h2>
+        <div class="gold-line"></div>
+      </div>
+      <div class="testimonials-grid">
+        <div class="testimonial-card fade-up">
+          <div class="stars">★★★★★</div>
+          <p class="testimonial-text">"I uploaded my resume on a Tuesday and had three interviews scheduled by Thursday. ChurchConnect matched me to a Youth Director role that perfectly aligned with my 8 years of youth counseling experience. Life-changing!"</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">SR</div>
+            <div>
+              <div class="author-name">Sarah Rodriguez</div>
+              <div class="author-role">Youth Director, Grace Community Church, TX</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card fade-up stagger-1">
+          <div class="stars">★★★★★</div>
+          <p class="testimonial-text">"As a church administrator, finding qualified staff used to take months. ChurchConnect reduced our hiring time by 70%. The AI matching is remarkably accurate — every candidate sent our way was genuinely qualified."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">MP</div>
+            <div>
+              <div class="author-name">Pastor Michael Peterson</div>
+              <div class="author-role">Senior Pastor, Cornerstone Baptist, GA</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card fade-up stagger-2">
+          <div class="stars">★★★★★</div>
+          <p class="testimonial-text">"After seminary, I struggled to find positions that matched my specific theology background. ChurchConnect found me three perfectly aligned opportunities within 48 hours. The platform truly understands ministry work."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">JK</div>
+            <div>
+              <div class="author-name">Rev. James Kim</div>
+              <div class="author-role">Associate Pastor, New Life Presbyterian, WA</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CTA SECTION ─── -->
+  <section class="section-pad cta-section">
+    <div class="container">
+      <div class="cta-inner">
+        <span class="section-label text-center" style="display:block; text-align:center;">Stay Connected</span>
+        <h2>Ready to <span class="gold-text">Begin Your Journey?</span></h2>
+        <p>Join thousands of ministry professionals who found their calling through ChurchConnect. Sign up for job alerts tailored to your gifts.</p>
+        <div class="cta-form">
+          <input type="email" class="cta-input" placeholder="Enter your email address" id="ctaEmail" />
+          <button class="btn btn-primary" onclick="subscribeEmail()">Get Job Alerts</button>
+        </div>
+        <p style="font-size:0.78rem; color:var(--text-muted); margin-top:0.75rem;">No spam. Unsubscribe any time. 🔒 Privacy protected.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="nav-logo">
+            <div class="logo-icon">✝</div>
+            <div class="logo-text">Church<span>Connect</span></div>
+          </div>
+          <p>Empowering America's churches and ministry professionals through AI-driven talent matching. Connecting faith communities with the gifted individuals they need.</p>
+          <div class="footer-socials">
+            <div class="social-btn">𝕏</div>
+            <div class="social-btn">f</div>
+            <div class="social-btn">in</div>
+            <div class="social-btn">▶</div>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>For Job Seekers</h4>
+          <ul>
+            <li><a href="jobs.html">Browse Jobs</a></li>
+            <li><a href="jobs.html#upload">Upload Resume</a></li>
+            <li><a href="#">Career Resources</a></li>
+            <li><a href="#">Ministry Training</a></li>
+            <li><a href="#">Salary Guides</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>For Churches</h4>
+          <ul>
+            <li><a href="pricing.html">View Plans</a></li>
+            <li><a href="churches.html">Church Directory</a></li>
+            <li><a href="#">Post a Job</a></li>
+            <li><a href="#">Manage Listings</a></li>
+            <li><a href="#">Church Resources</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Press</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 ChurchConnect. All rights reserved.</span>
+        <span style="display:flex; gap:1rem;">
+          <a href="#" style="color:var(--text-muted);" onmouseover="this.style.color='var(--gold-light)'" onmouseout="this.style.color='var(--text-muted)'">Privacy</a>
+          <a href="#" style="color:var(--text-muted);" onmouseover="this.style.color='var(--gold-light)'" onmouseout="this.style.color='var(--text-muted)'">Terms</a>
+          <a href="#" style="color:var(--text-muted);" onmouseover="this.style.color='var(--gold-light)'" onmouseout="this.style.color='var(--text-muted)'">Cookies</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ─── LOGIN MODAL ─── -->
+  <div class="modal-overlay" id="loginModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div>
+          <h3 style="font-family:'Cinzel',serif;">Welcome Back</h3>
+          <p style="color:var(--text-muted); font-size:0.85rem; margin-top:0.25rem;">Sign in to your ChurchConnect account</p>
+        </div>
+        <button class="modal-close" onclick="closeModal('loginModal')">✕</button>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input type="email" class="form-input" placeholder="you@example.com" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-input" placeholder="••••••••" />
+      </div>
+      <button class="btn btn-primary" style="width:100%; justify-content:center; margin-bottom:1rem;" onclick="showToast('Welcome back! Redirecting...','success'); closeModal('loginModal');">Sign In</button>
+      <p style="text-align:center; font-size:0.85rem; color:var(--text-muted);">Don't have an account? <a href="#" style="color:var(--gold);" onclick="closeModal('loginModal'); openModal('signupModal')">Create one</a></p>
+    </div>
+  </div>
+
+  <!-- ─── SIGNUP MODAL ─── -->
+  <div class="modal-overlay" id="signupModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div>
+          <h3 style="font-family:'Cinzel',serif;">Join ChurchConnect</h3>
+          <p style="color:var(--text-muted); font-size:0.85rem; margin-top:0.25rem;">Find your calling in ministry</p>
+        </div>
+        <button class="modal-close" onclick="closeModal('signupModal')">✕</button>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">First Name</label>
+          <input type="text" class="form-input" placeholder="John" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Last Name</label>
+          <input type="text" class="form-input" placeholder="Doe" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input type="email" class="form-input" placeholder="you@example.com" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">I am a...</label>
+        <select class="form-input filter-select" style="width:100%;">
+          <option value="seeker">Job Seeker (Individual)</option>
+          <option value="church">Church / Organization</option>
+          <option value="seminary">Seminary / Bible College</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-input" placeholder="Create a strong password" />
+      </div>
+      <button class="btn btn-primary" style="width:100%; justify-content:center; margin-bottom:1rem;" onclick="showToast('Account created! Welcome to ChurchConnect 🎉','success'); closeModal('signupModal');">Create Account</button>
+      <p style="text-align:center; font-size:0.82rem; color:var(--text-muted);">By signing up you agree to our <a href="#" style="color:var(--gold);">Terms</a> &amp; <a href="#" style="color:var(--gold);">Privacy Policy</a></p>
+    </div>
+  </div>
+
+  <!-- ─── TOAST CONTAINER ─── -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
